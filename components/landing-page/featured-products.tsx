@@ -3,43 +3,10 @@ import Link from "next/link";
 import SectionHeader from "../common/section-header";
 import { Button } from "../ui/button";
 import ProductCard from "../products/product-card";
+import { getFeaturedProducts } from "@/lib/products/product-select";
 
-const FeaturedProduct = [
-  {
-    id: 1,
-    name: "ParityKit",
-    description: " a toolkit for creating parity products",
-    tags: ["SAAS", "Pricing", "Global"],
-    votes: 615,
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    name: "ParityKit",
-    description: " a toolkit for creating parity products",
-    tags: ["SAAS", "Pricing", "Global"],
-    votes: 615,
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    name: "ParityKit",
-    description: " a toolkit for creating parity products",
-    tags: ["SAAS", "Pricing", "Global"],
-    votes: 615,
-    isFeatured: true,
-  },
-  {
-    id: 4,
-    name: "ParityKit",
-    description: " a toolkit for creating parity products",
-    tags: ["SAAS", "Pricing", "Global"],
-    votes: 615,
-    isFeatured: true,
-  },
-];
-
-export default function FeaturedProducts() {
+export default async function FeaturedProducts() {
+  const FeaturedProduct = await getFeaturedProducts();
   return (
     <section className="py-20 bg-muted/20">
       <div className="wrapper">

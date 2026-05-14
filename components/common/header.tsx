@@ -9,6 +9,7 @@ import {
   SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
+import { Suspense } from "react";
 
 const Logo = () => {
   return (
@@ -47,21 +48,23 @@ export default function Header() {
             </Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Show when="signed-out">
-              <SignInButton mode="modal" />
-              <SignUpButton mode="modal">
-                <Button> Sign Up</Button>
-              </SignUpButton>
-            </Show>
-            <Show when="signed-in">
-              <Button asChild>
-                <Link href="/submit">
-                  <SparklesIcon className="size-4" />
-                  Submit Project
-                </Link>
-              </Button>
-              <UserButton />
-            </Show>
+            <Suspense fallback={<div>Loading Auth ...</div>}>
+              <Show when="signed-out">
+                <SignInButton mode="modal" />
+                <SignUpButton mode="modal">
+                  <Button> Sign Up</Button>
+                </SignUpButton>
+              </Show>
+              <Show when="signed-in">
+                <Button asChild>
+                  <Link href="/submit">
+                    <SparklesIcon className="size-4" />
+                    Submit Project
+                  </Link>
+                </Button>
+                <UserButton />
+              </Show>
+            </Suspense>
           </div>
         </div>
       </div>
