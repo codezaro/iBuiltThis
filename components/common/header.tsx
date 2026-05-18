@@ -1,4 +1,10 @@
-import { HomeIcon, SparkleIcon, SparklesIcon, UserIcon } from "lucide-react";
+import {
+  HomeIcon,
+  LoaderIcon,
+  SparkleIcon,
+  SparklesIcon,
+  UserIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import {
@@ -48,7 +54,13 @@ export default function Header() {
             </Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Suspense fallback={<div>Loading Auth ...</div>}>
+            <Suspense
+              fallback={
+                <div>
+                  <LoaderIcon className="size-4 animate-spin" />
+                </div>
+              }
+            >
               <Show when="signed-out">
                 <SignInButton mode="modal" />
                 <SignUpButton mode="modal">
