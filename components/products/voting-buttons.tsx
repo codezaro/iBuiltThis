@@ -1,28 +1,41 @@
 "use client";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, Loader2Icon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import {
   downvoteProductAction,
   upvoteProductAction,
 } from "@/lib/products/product-actions";
+import { useOptimistic, useTransition } from "react";
 
 export default function VotingButtons({
   hasVoted,
-  voteCount,
+  voteCount: initialVoteCount,
   productId,
 }: {
   hasVoted: boolean;
   voteCount: number;
   productId: number;
 }) {
+  //because updating vote count is taking too mich time we will use useOptimistic
+  const [optimisticVotecount, setOptimisticVotecount] = useOptimistic(
+    initialVoteCount,
+    (currentCount, change: number) => Math.max(0, currentCount + change),
+  );
+  const [isPending, startTransition] = useTransition();
   const handleUpvote = async () => {
-    const result = await upvoteProductAction(productId);
-    console.log(result, "upvote working");
+    startTransition(async () => {
+      setOptimisticVotecount(1); // immediately update the UI
+      const result = await upvoteProductAction(productId);
+      console.log(result, "upvote working");
+    });
   };
   const handleDownvote = async () => {
-    const result = await downvoteProductAction(productId);
-    console.log(result, "downvote working");
+    startTransition(async () => {
+      setOptimisticVotecount(-1); // immediately update the UI
+      const result = await downvoteProductAction(productId);
+      console.log(result, "downvote working");
+    });
   };
   return (
     <div
@@ -36,6 +49,7 @@ export default function VotingButtons({
         onClick={handleUpvote}
         variant="ghost"
         size="icon-sm"
+        disabled={isPending}
         className={cn(
           "h-8 w-8 text-primary",
           hasVoted
@@ -46,9 +60,10 @@ export default function VotingButtons({
         <ChevronUpIcon className="size-4" />
       </Button>
       <span className="text-sm font-semibold text-foreground transition-colors">
-        {voteCount}
+        {optimisticVotecount}
       </span>
       <Button
+        disabled={isPending}
         onClick={handleDownvote}
         variant="ghost"
         size="icon-sm"
