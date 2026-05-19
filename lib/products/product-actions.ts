@@ -15,6 +15,7 @@ export const addProductAction = async (
 ) => {
   try {
     const { userId, orgId } = await auth();
+    console.log(userId, orgId, "userId, orgId");
 
     if (!userId) {
       return {
@@ -36,7 +37,7 @@ export const addProductAction = async (
     const userEmail = user?.primaryEmailAddress?.emailAddress || "anonymous";
 
     const rawFormData = Object.fromEntries(formData.entries());
-
+    console.log("Raw form data:", rawFormData);
     //validate the data
     const validatedData = productSchema.safeParse(rawFormData);
 
@@ -118,7 +119,7 @@ export const upvoteProductAction = async (productId: number) => {
       })
       .where(eq(products.id, productId));
 
-    revalidatePath("/");
+    revalidatePath("/"); // clears Next.js cache an druns on sever unlike to refresh()
 
     return {
       success: true,

@@ -16,6 +16,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { Suspense } from "react";
+import CustomUserButton from "./custom-user-button";
 
 const Logo = () => {
   return (
@@ -74,7 +75,7 @@ export default function Header() {
                     Submit Project
                   </Link>
                 </Button>
-                <UserButton />
+                <CustomUserButton />
               </Show>
             </Suspense>
           </div>

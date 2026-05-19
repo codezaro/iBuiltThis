@@ -7,6 +7,7 @@ import { useActionState } from "react";
 import { FormField } from "../forms/form-field";
 import { FormState } from "@/types";
 import { addProductAction } from "@/lib/products/product-actions";
+import { OrganizationSwitcher } from "@clerk/nextjs";
 
 const initialState: FormState = {
   success: false,
@@ -61,7 +62,7 @@ export default function ProductSubmitForm() {
         helperText="URL-friendly version of your product name"
         error={getFieldErrors("slug")}
       />
-
+      {/* <OrganizationSwitcher /> */}
       <FormField
         label="Tagline"
         name="tagline"
@@ -77,7 +78,6 @@ export default function ProductSubmitForm() {
         name="description"
         id="description"
         placeholder="Tell us more about your product..."
-        required
         onChange={() => {}}
         error={getFieldErrors("description")}
         textarea
